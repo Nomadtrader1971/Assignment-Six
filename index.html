@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ABDEL'S HOMEWORK 6</title>
+</head>
+
+<body>
+  <button data-planet="earth">EARTH</button>
+  <button data-planet="mars">MARS</button>
+  <button data-planet="jupiter">JUPITER</button>
+  <div id="gifs-appear-here">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    
+    $("button").on("click", function() {
+      
+      var planet = $(this).attr("data-planet");
+
+      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        planet + "&api_key=WaecgOZ7TOwPkcxxrX4jVSSqw0b9nMcu&limit=5";
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .done(function(response) {
+          console.log(queryURL);
+
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+
+            var planetDiv = $("<div>");
+
+            var p = $("<p>").text("Rating: " + results[i].rating);
+
+            var planetImage = $("<img>");
+      
+            planetImage.attr("src", results[i].images.fixed_height.url);
+
+            planetDiv.append(p);
+            planetDiv.append(planetImage);
+
+            $("#gifs-appear-here").prepend(planetDiv);
+          }
+
+      });
+    });
+
+
+
+// MAKING THE GIFS STOP AND GO:
+
+/*IN ORDER TO MAKE THE GIFS STOP AND RESTART WHEN CLICKED, I UNDERSTAND THAT I NEED BOTH THE STILL AND THE ANIMATE VERSION OF THE GIF. IF I HAD THEM, I CAN USE THE CODE BELOW THAT WE LEARNED IN CLASS TO SWITCH BETWEEN THE TWO STATES. I AM ASSUMING THERE IS A WAY TO DO THIS BY INCLUDING ADDITIONAL PARAMETERS IN MY QUERY THAT WOULD GET ME THE TWO STATES OF THE GIF. AS OF RIGHT NOW, I DON'T KNOW HOW. 
+IF I WAS USING SPECIFIC GIFS THAT I CHOSE (INSTEAD OF USING RAMDOMLY GENERATED GIFS, I CAN USED THE CODE BELOW BY GIVING EACH STATE A "gif" CLASS NAME*/
+
+$(".gif").on("click", function() {
+      var state = $(this).attr("data-state");
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+
+
+// ADDING A BUTTON THAT CAN BE USED TO ADD A NEW PLANET
+
+//I NEED TO ADD A NEW BUTTON THAT IS ONCE CLICKED OPENS A TEXT BOX WHERE THE NAME OF THE PLANET TO BE ADDED IS ENTERED AND ONCE SUBMITTED, I CAN USE A FUNCTION THAT CALLS ALL THE PROCESS USED TO CREATED THE FIRST THREE BUTTONS.
+
+
+
+
+
+  </script>
+</body>
+
+</html>
